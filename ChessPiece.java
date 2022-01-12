@@ -1,8 +1,8 @@
 public class ChessPiece{
-    public char name;
-    public boolean isBlack;
-    public ChessPiece(char n, boolean isB){
-        name = n;
-        isBlack = isB;
+    public String name;
+    public boolean isB;
+    public ChessPiece(String n, boolean val){
+        this.name = n;
+        this.isB = val;
     }
 }
