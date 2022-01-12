@@ -1,7 +1,7 @@
 public class ChessPiece{
-    public String name;
+    public char name;
     public boolean isBlack;
-    public ChessPiece(String n, boolean isB){
+    public ChessPiece(char n, boolean isB){
         name = n;
         isBlack = isB;
     }
