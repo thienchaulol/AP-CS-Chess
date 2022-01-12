@@ -5,4 +5,8 @@ public class ChessPiece{
         this.name = n;
         this.isB = val;
     }
+    
+    public String getPieceName(){
+        return name;
+    }
 }
