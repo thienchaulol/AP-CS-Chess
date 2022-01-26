@@ -5,8 +5,52 @@ public class ChessBoard{
     ArrayList<ArrayList<ChessPiece>> board;
     ChessRules obj;
     String move;
-    String lastMove;
-
+    
+    public String parseMove(String move) { 
+        String col_index = "";
+        String row_index = "";
+        String col = move.substring(0,1);
+        String row = move.substring(1);
+        
+        if (col.equals("a")) {
+            col_index = "1";
+        } else if (col.equals("b")) {
+            col_index = "2";
+        } else if (col.equals("c")) {
+            col_index = "3";
+        } else if (col.equals("d")) {
+            col_index = "4";
+        } else if (col.equals("e")) {
+            col_index = "5";
+        } else if (col.equals("f")) {
+            col_index = "6";
+        } else if (col.equals("g")) {
+            col_index = "7";
+        } else if (col.equals("h")) {
+            col_index = "8";
+        }
+        
+        if (row.equals("1")) {
+            row_index = "7";
+        } else if (row.equals("2")) {
+            row_index = "6";
+        } else if (row.equals("3")) {
+            row_index = "5";
+        } else if (row.equals("4")) {
+            row_index = "4";
+        } else if (row.equals("5")) {
+            row_index = "3";
+        } else if (row.equals("6")) {
+            row_index = "2";
+        } else if (row.equals("7")) {
+            row_index = "1";
+        } else if (row.equals("8")) {
+            row_index = "0";
+        }
+        
+        return row_index + "," + col_index;
+    } // will return the col of the imputted move, ex. a7 will give 1,1
+    
     public void coolPrint(String str){
         for(int i = 0; i < str.length(); i++){
             try{
@@ -52,11 +96,8 @@ public class ChessBoard{
             board.add(x);
         }
 
-        char start = 'a'; //populate bottom letters
-        for(int i = 1; i < 9; i++){
-
-            board.get(8).set(i, new ChessPiece(String.valueOf(start++), false));
-        }
+        // char start = 'a'; //populate bottom letters
+        // for(int i = 1; i < 9; i++){
 
         // board.get(8).set(i, new ChessPiece(String.valueOf(start++), false));
         // }
@@ -127,47 +168,7 @@ public class ChessBoard{
         do{
             System.out.println("Please input your chess move :)!");
             Scanner obj = new Scanner(System.in);
-            lastMove = move;
             move = obj.nextLine();
         }while(true);
-    }
-
-    public boolean CheckValidMove(String startBox, String endBox){
-        int startI = Integer.parseInt(startBox.substring(0,1));
-        int startJ = Integer.parseInt(startBox.substring(2));
-        int endI = Integer.parseInt(endBox.substring(0, 1));
-        int endJ = Integer.parseInt(endBox.substring(2));
-        if(startI < 1 || startI > 8) return false;
-        else if(startJ < 1 || startJ > 8) return false;
-        else if(endI < 1 || endI > 8) return false;
-        else if(endJ < 1 || endJ > 8) return false;
-        if(board.get(startI).get(startJ).name.equals("♟") || board.get(startI).get(startJ).name.equals("♙")){
-            if((board.get(startI)).get(startJ).isB){
-                if(startJ == endJ){
-                    if((board.get(startI)).get(startJ).isB){
-                        if(startI == endI -1){
-                            if(board.get(endI).get(endJ).name.equals("☐")){// change to whatever is the new board empty character
-                                return true;
-                            }
-                        } else if (startI == endI - 2){
-                            if(board.get(endI).get(endJ).name.equals("☐")){
-                                return true;
-                            }
-                        }
-                    }
-                } else if(startJ == endJ + 1 || startJ == endJ - 1){
-                    if(startI == endI - 1){
-                        if(!board.get(endI).get(endJ).name.equals("☐") && !board.get(endI).get(endJ).isB){
-                            return true;
-                        }// else if(parseMove(lastMove.substring(0,1)));
-                    }
-                }
-            }
-            return false;
-
-        } else if(board.get(startI).get(startJ).name.equals("♜") || board.get(startI).get(startJ).name.equals("♖")){
-
-        }
-        return true;
     }
 }
