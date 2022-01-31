@@ -13,21 +13,21 @@ public class ChessBoard{
         String row = move.substring(1);
         
         if (col.equals("a")) {
-            col_index = "1";
+            col_index = "0";
         } else if (col.equals("b")) {
-            col_index = "2";
+            col_index = "1";
         } else if (col.equals("c")) {
-            col_index = "3";
+            col_index = "2";
         } else if (col.equals("d")) {
-            col_index = "4";
+            col_index = "3";
         } else if (col.equals("e")) {
-            col_index = "5";
+            col_index = "4";
         } else if (col.equals("f")) {
-            col_index = "6";
+            col_index = "5";
         } else if (col.equals("g")) {
-            col_index = "7";
+            col_index = "6";
         } else if (col.equals("h")) {
-            col_index = "8";
+            col_index = "7";
         }
         
         if (row.equals("1")) {
@@ -47,9 +47,9 @@ public class ChessBoard{
         } else if (row.equals("8")) {
             row_index = "0";
         }
-        row_index = String.valueOf(Integer.parseInt(row_index)+1);
+        //everything is 0-7
         return row_index + "," + col_index;
-    } // will return the col of the imputted move, ex. a7 will give 1,1
+    } // will return the row and col of the imputted move, ex. a7 will give 1,0
     
     public void coolPrint(String str){
         for(int i = 0; i < str.length(); i++){
@@ -146,6 +146,7 @@ public class ChessBoard{
     
     public void movePiece(ArrayList<ArrayList<ChessPiece>> board, String move) {
         // first check if possible
+        ChessPiece blank = new ChessPiece("☐", false);
         String start = move.substring(0,2);
         String end = move.substring(2);
         
@@ -154,14 +155,14 @@ public class ChessBoard{
         String end_row_str = parseMove(end).substring(0,1);
         String end_col_str = parseMove(end).substring(2);
         int start_row = Integer.parseInt(start_row_str);
-        int start_col = Integer.parseInt(start_col_str);
+        int start_col = Integer.parseInt(start_col_str) + 1;
         int end_row = Integer.parseInt(end_row_str);
-        int end_col = Integer.parseInt(end_col_str);
-        
-        ChessPiece temp = board.get(end_row).get(end_col);
-        
-        board.get(end_row).set(end_col, board.get(start_row).get(start_col));
-        board.get(start_row).set(start_col, temp);
+        int end_col = Integer.parseInt(end_col_str) + 1;
+        // converts move into seperate intergers that are used to index
+        ChessPiece temp = board.get(start_row).get(start_col);
+        //swaps pieces
+        board.get(end_row).set(end_col, temp);
+        board.get(start_row).set(start_col, blank);
     }
 
     public void playGame(){
