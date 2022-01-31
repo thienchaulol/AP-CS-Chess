@@ -47,7 +47,7 @@ public class ChessBoard{
         } else if (row.equals("8")) {
             row_index = "0";
         }
-        
+        row_index = String.valueOf(Integer.parseInt(row_index)+1);
         return row_index + "," + col_index;
     } // will return the col of the imputted move, ex. a7 will give 1,1
     
@@ -169,6 +169,8 @@ public class ChessBoard{
             System.out.println("Please input your chess move :)!");
             Scanner obj = new Scanner(System.in);
             move = obj.nextLine();
+            movePiece(board, move);
+            printBoard();
         }while(true);
     }
 }
