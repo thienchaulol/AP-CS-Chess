@@ -6,6 +6,7 @@ public class ChessBoard{
     ChessRules obj;
     String move;
     String lastMove;
+    boolean isWhiteMove = true;
 
     public String parseMove(String move) { 
         String col_index = "";
@@ -160,6 +161,22 @@ public class ChessBoard{
         int start_col = Integer.parseInt(start_col_str) + 1;
         int end_row = Integer.parseInt(end_row_str);
         int end_col = Integer.parseInt(end_col_str) + 1;
+        
+        if (isWhiteMove) { // checks if its whites move
+            if(board.get(start_row).get(start_col).isB) { // checks if piece is white
+                System.out.println("Not yo move :/"); // its very self explanitory
+                playGame();
+            } else {
+                isWhiteMove = false;
+            }
+        } else {
+            if (!board.get(start_row).get(start_col).isB) { // checks if the piece is black
+                System.out.println("Not yo move :/");
+                playGame();                
+            } else {
+                isWhiteMove = true;
+            }
+        }
         
         while(!CheckValidMove(Integer.parseInt(start_row_str), Integer.parseInt(start_col_str), Integer.parseInt(end_row_str), Integer.parseInt(end_col_str))){
             playGame();

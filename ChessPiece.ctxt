@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=ChessPiece
+comment1.params=n\ val
+comment1.target=ChessPiece(java.lang.String,\ boolean)
+comment2.params=
+comment2.target=java.lang.String\ getPieceName()
+numComments=3

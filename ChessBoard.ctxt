@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=ChessBoard
+comment1.params=move
+comment1.target=java.lang.String\ parseMove(java.lang.String)
+comment2.params=str
+comment2.target=void\ coolPrint(java.lang.String)
+comment3.params=
+comment3.target=void\ printBoard()
+comment4.params=
+comment4.target=void\ createStartingBoard()
+comment5.params=
+comment5.target=void\ main()
+comment6.params=board\ move
+comment6.target=void\ movePiece(java.util.ArrayList,\ java.lang.String)
+comment7.params=
+comment7.target=void\ playGame()
+comment8.params=startI\ startJ\ endI\ endJ
+comment8.target=boolean\ CheckValidMove(int,\ int,\ int,\ int)
+numComments=9
