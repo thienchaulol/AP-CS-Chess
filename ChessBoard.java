@@ -5,13 +5,14 @@ public class ChessBoard{
     ArrayList<ArrayList<ChessPiece>> board;
     ChessRules obj;
     String move;
-    
+    String lastMove;
+
     public String parseMove(String move) { 
         String col_index = "";
         String row_index = "";
         String col = move.substring(0,1);
         String row = move.substring(1);
-        
+
         if (col.equals("a")) {
             col_index = "0";
         } else if (col.equals("b")) {
@@ -29,7 +30,7 @@ public class ChessBoard{
         } else if (col.equals("h")) {
             col_index = "7";
         }
-        
+
         if (row.equals("1")) {
             row_index = "7";
         } else if (row.equals("2")) {
@@ -109,7 +110,7 @@ public class ChessBoard{
         //Row 1 and Row 6 are 'P's (pawns)
         for(int i = 1; i < 9; i++){
             board.get(1).set(i, new ChessPiece("♟", true));
-            board.get(6).set(i, new ChessPiece("♙", true));
+            board.get(6).set(i, new ChessPiece("♙", false));
         }
 
         //Corners are Rooks
@@ -143,12 +144,13 @@ public class ChessBoard{
         //obj = new ChessRules(board);
         playGame();
     }
-    
+
     public void movePiece(ArrayList<ArrayList<ChessPiece>> board, String move) {
         // first check if possible
         ChessPiece blank = new ChessPiece("☐", false);
         String start = move.substring(0,2);
         String end = move.substring(2);
+        
         
         String start_row_str = parseMove(start).substring(0,1);
         String start_col_str = parseMove(start).substring(2);
@@ -158,6 +160,11 @@ public class ChessBoard{
         int start_col = Integer.parseInt(start_col_str) + 1;
         int end_row = Integer.parseInt(end_row_str);
         int end_col = Integer.parseInt(end_col_str) + 1;
+        
+        while(!CheckValidMove(Integer.parseInt(start_row_str), Integer.parseInt(start_col_str), Integer.parseInt(end_row_str), Integer.parseInt(end_col_str))){
+            playGame();
+        }
+        
         // converts move into seperate intergers that are used to index
         ChessPiece temp = board.get(start_row).get(start_col);
         //swaps pieces
@@ -169,9 +176,114 @@ public class ChessBoard{
         do{
             System.out.println("Please input your chess move :)!");
             Scanner obj = new Scanner(System.in);
+            lastMove = move;
             move = obj.nextLine();
             movePiece(board, move);
             printBoard();
         }while(true);
+    }
+
+    public boolean CheckValidMove(int startI, int startJ, int endI, int endJ){
+        startI = startI;
+        startJ = startJ+1;
+        endI = endI;
+        endJ = endJ+1;
+        System.out.print("Start index: " + startI + ", " + startJ);
+        System.out.print("End index: " + endI + ", " + endJ);
+        //checking if piece is out of bounds
+        if(startI < 0 || startI > 8) return false;
+        else if(startJ < 1 || startJ > 9) return false;
+        else if(endI < 0 || endI > 8) return false;
+        else if(endJ < 1 || endJ > 9) return false;
+        if(board.get(startI).get(startJ).name.equals("♟") || board.get(startI).get(startJ).name.equals("♙")){
+            if(board.get(startI).get(startJ).isB){//for black pieces
+                if(startJ == endJ){
+                    if(startI == endI - 1){
+                        if(board.get(endI).get(endJ).name.equals("☐")){// change to whatever is the new board empty character
+                            return true;
+                        }
+                    } else if (startI == endI - 2 && startI == 1){
+                        if(board.get(endI).get(endJ).name.equals("☐")){
+                            return true;
+                        }
+                    }
+                } else if(startJ == endJ + 1 || startJ == endJ - 1){
+                    if(startI == endI - 1){
+                        if(!board.get(endI).get(endJ).name.equals("☐") || !board.get(endI).get(endJ).isB){
+                            return true;
+                        }/*else if(parseMove(lastMove.substring(0,1))){ // code enpassant
+
+                        }*/
+                    }
+                }
+            } else{
+                if(startJ == endJ){
+                    if(startI == endI + 1){
+                        if(board.get(endI).get(endJ).name.equals("☐")){// change to whatever is the new board empty character
+                            return true;
+                        }
+                    } else if (startI == endI + 2 && startI == 6){
+                        if(board.get(endI).get(endJ).name.equals("☐")){
+                            return true;
+                        }
+                    }
+                } else if(startJ == endJ + 1 || startJ == endJ - 1){
+                    if(startI == endI + 1){
+                        if(!board.get(endI).get(endJ).name.equals("☐") || board.get(endI).get(endJ).isB){
+                            return true;
+                        }/*else if(parseMove(lastMove.substring(0,1))){ // code enpassant
+
+                        }*/
+                    }
+                }
+            }
+        } else if(board.get(startI).get(startJ).name.equals("♜") || board.get(startI).get(startJ).name.equals("♖")){
+            if(startI == endI){
+                board.get(startI).get(startJ).hasMoved = true;
+                return true;
+            }else if(startJ == endJ){
+                //check for obstacles with Mr. chau's method
+                board.get(startI).get(startJ).hasMoved = true;
+                return true;
+            }
+        } else if(board.get(startI).get(startJ).name.equals("♞") || board.get(startI).get(startJ).name.equals("♘")){
+            if(startI == endI+1 || startI == endI -1){
+                if(startJ == endJ + 2 || startJ == endJ -2) return true; 
+            } else if(startI == endI+2 || startI == endI-2){
+                if(startJ == endJ + 1 || startJ == endJ -1) return true;
+            }
+        } else if(board.get(startI).get(startJ).name.equals("♝") || board.get(startI).get(startJ).name.equals("♗")){
+            if(Math.abs(startI - endI) == Math.abs(startJ - endJ)){
+                return true;
+            }
+        } else if(board.get(startI).get(startJ).name.equals("♛") || board.get(startI).get(startJ).name.equals("♕")){
+            if(startI == endI){
+                return true;
+            } else if(startJ == endJ){
+                return true;
+            } else if(Math.abs(startI - endI) == Math.abs(startJ - endJ)){
+                return true;
+            }
+        } else if(board.get(startI).get(startJ).name.equals("♚") || board.get(startI).get(startJ).name.equals("♔")){
+            if((startI == endI + 1 || startI == endI -1 || startJ == endJ + 1 ||startJ == endJ - 1)){
+                board.get(startI).get(startJ).hasMoved = true;
+                return true;
+            } else if(startI == endI){
+                if(startI == endI+2 && !board.get(startI).get(0).hasMoved && !board.get(startI).get(startJ).hasMoved){
+                    return true;
+                } else if(startI == endI-2 && !board.get(startI).get(0).hasMoved && !board.get(startI).get(startJ).hasMoved){
+                    return true;
+                }
+            }
+        }
+        /*System.out.println("Didn't go through");
+        System.out.println(board.get(startI).get(startJ).name);
+        for(ArrayList<ChessPiece> x: board){
+            for(ChessPiece y: x){
+                System.out.print(y.name + " ");
+            }
+            System.out.println("");
+        }*/
+        return false;
     }
 }
