@@ -8,6 +8,79 @@ public class ChessBoard{
     String lastMove;
     boolean isWhiteMove = true;
 
+    /*
+     * Function that returns true if a path is valid.
+     * Only knights can move over pieces.
+     */
+    public boolean checkPath(String startBox, String endBox){
+        /*
+         * 1. See if there is any piece in between starting point and destination.
+         * Assume piece is a queen. Valid check for piece-specific moves is in Kevin's
+         * function
+         * 
+         * startBox is 1,1 (Rook move)
+         * endBox 8,1 *Have to check rows between*
+         * 
+         * startBox is 1,3 (Bishop move)
+         * endBox is 7,8 *Have to check diagonals between*
+         * 
+         * Assuming a piece is a queen, check 
+         */
+        /*
+         * Check if row move
+         * Check if diagonal move
+         * Check if column move
+         */
+        System.out.println(startBox);
+        System.out.println(endBox);
+        
+        if(startBox.charAt(startBox.length()-1) == endBox.charAt(startBox.length()-1)){
+            //Row Move, check row for obstructions
+            //System.out.println("Checking column move");
+            int columnNum = Integer.parseInt(startBox.substring(startBox.length()-1, startBox.length()));
+            /*
+             * check 7 to 4 if start is larger than end
+             * check 4 to 7 if end is larger than start
+             */
+            int startRow = Integer.parseInt(startBox.substring(0, 1));
+            int endRow = Integer.parseInt(endBox.substring(0, 1));
+            if(startRow < endRow){ //Up to down
+                for(int i = startRow; i < endRow; i++){
+                    //System.out.println(board.get(i+1).get(columnNum+1).getPieceName());
+                    //System.out.println((i+1) + ", " + (columnNum+1));
+                    if(!board.get(i+1).get(columnNum+1).getPieceName().equals("☐")) return false;
+                }
+            } else if(startRow > endRow){ //Down to up
+                for(int i = startRow; i > endRow; i--){
+                    //System.out.println(board.get(i-1).get(columnNum+1).getPieceName());
+                    //System.out.println((i-1) + ", " + (columnNum+1));
+                    if(!board.get(i-1).get(columnNum+1).getPieceName().equals("☐")) return false;
+                }
+            }
+        } else if(startBox.charAt(0) == endBox.charAt(0)){
+            //Column Move, check row for obstructions
+            int startColumn = Integer.parseInt(startBox.substring(2,startBox.length()));
+            int endColumn = Integer.parseInt(endBox.substring(2, startBox.length()));
+            //System.out.println("Checking row move");
+            int rowNum = Integer.parseInt(startBox.substring(0, 1));
+            if(startColumn < endColumn){ //Left to right
+                for(int i = startColumn; i < endColumn; i++){
+                    //System.out.println(board.get(rowNum).get(i+2).getPieceName());
+                    if(!board.get(rowNum).get(i+2).getPieceName().equals("☐")) return false;
+                }
+            } else if(startColumn > endColumn){ //Right to left
+                for(int i = startColumn; i > endColumn; i--){
+                    //System.out.println(board.get(rowNum).get(i-1).getPieceName());
+                    if(!board.get(rowNum).get(i).getPieceName().equals("☐")) return false;
+                }
+            }
+        } else {
+            //Diagonal Move, check diagonals for obstructions
+            //TODO
+        }
+        return true;
+    }
+
     public String parseMove(String move) { 
         String col_index = "";
         String row_index = "";
@@ -52,7 +125,7 @@ public class ChessBoard{
         //everything is 0-7
         return row_index + "," + col_index;
     } // will return the row and col of the imputted move, ex. a7 will give 1,0
-    
+
     public void coolPrint(String str){
         for(int i = 0; i < str.length(); i++){
             try{
@@ -152,7 +225,6 @@ public class ChessBoard{
         String start = move.substring(0,2);
         String end = move.substring(2);
         
-        
         String start_row_str = parseMove(start).substring(0,1);
         String start_col_str = parseMove(start).substring(2);
         String end_row_str = parseMove(end).substring(0,1);
@@ -185,10 +257,15 @@ public class ChessBoard{
         }
         
         // converts move into seperate intergers that are used to index
+
         ChessPiece temp = board.get(start_row).get(start_col);
-        //swaps pieces
-        board.get(end_row).set(end_col, temp);
-        board.get(start_row).set(start_col, blank);
+        if(checkPath(parseMove(start), parseMove(end))){
+            //swaps pieces
+            board.get(end_row).set(end_col, temp);
+            board.get(start_row).set(start_col, blank);
+        } else {
+            System.out.println("Not a valid move, please try again.");
+        }
     }
 
     public void playGame(){
@@ -207,8 +284,8 @@ public class ChessBoard{
         startJ = startJ+1;
         endI = endI;
         endJ = endJ+1;
-        System.out.print("Start index: " + startI + ", " + startJ);
-        System.out.print("End index: " + endI + ", " + endJ);
+        //System.out.print("Start index: " + startI + ", " + startJ);
+        //System.out.print("End index: " + endI + ", " + endJ);
         //checking if piece is out of bounds
         if(startI < 0 || startI > 8) return false;
         else if(startJ < 1 || startJ > 9) return false;

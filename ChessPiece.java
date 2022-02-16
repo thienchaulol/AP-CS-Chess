@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class ChessPiece{
     public String name;
     public boolean isB;
