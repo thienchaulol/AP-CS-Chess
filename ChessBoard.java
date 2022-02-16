@@ -234,6 +234,11 @@ public class ChessBoard{
         int end_row = Integer.parseInt(end_row_str);
         int end_col = Integer.parseInt(end_col_str) + 1;
         
+        
+        while(!CheckValidMove(Integer.parseInt(start_row_str), Integer.parseInt(start_col_str), Integer.parseInt(end_row_str), Integer.parseInt(end_col_str))){
+            playGame();
+        }
+        
         if (isWhiteMove) { // checks if its whites move
             if(board.get(start_row).get(start_col).isB) { // checks if piece is white
                 System.out.println("Not yo move :/"); // its very self explanitory
@@ -252,9 +257,6 @@ public class ChessBoard{
             }
         }
         
-        while(!CheckValidMove(Integer.parseInt(start_row_str), Integer.parseInt(start_col_str), Integer.parseInt(end_row_str), Integer.parseInt(end_col_str))){
-            playGame();
-        }
         
         // converts move into seperate intergers that are used to index
 
