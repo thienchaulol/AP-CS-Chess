@@ -58,7 +58,7 @@ public class ChessBoard{
                 }
             }
         } else if(startBox.charAt(0) == endBox.charAt(0)){
-            //Row Move, check row for obstructions
+            //Column Move, check row for obstructions
             int startColumn = Integer.parseInt(startBox.substring(2,startBox.length()));
             int endColumn = Integer.parseInt(endBox.substring(2, startBox.length()));
             //System.out.println("Checking row move");
@@ -198,13 +198,13 @@ public class ChessBoard{
         board.get(7).set(2, new ChessPiece("♘", false));
         board.get(7).set(7, new ChessPiece("♘", false));
         //Next to Knights are Bishops
-        board.get(0).set(3, new ChessPiece("♝", false));
-        board.get(0).set(6, new ChessPiece("♝", false));
+        board.get(0).set(3, new ChessPiece("♝", true));
+        board.get(0).set(6, new ChessPiece("♝", true));
         board.get(7).set(3, new ChessPiece("♗", false));
         board.get(7).set(6, new ChessPiece("♗", false));
         //White will always be bottom, black on top
-        board.get(0).set(4, new ChessPiece("♛", false));
-        board.get(0).set(5, new ChessPiece("♚", false));
+        board.get(0).set(4, new ChessPiece("♛", true));
+        board.get(0).set(5, new ChessPiece("♚", true));
         board.get(7).set(4, new ChessPiece("♕", false));
         board.get(7).set(5, new ChessPiece("♔", false));
     }
@@ -257,8 +257,7 @@ public class ChessBoard{
         // converts move into seperate intergers that are used to index
 
         ChessPiece temp = board.get(start_row).get(start_col);
-        if(temp.name.equals("♞") || temp.name.equals("♘") || 
-        checkPath(parseMove(start), parseMove(end))){
+        if(checkPath(parseMove(start), parseMove(end))){
             //swaps pieces
             board.get(end_row).set(end_col, temp);
             board.get(start_row).set(start_col, blank);
@@ -283,8 +282,8 @@ public class ChessBoard{
         startJ = startJ+1;
         endI = endI;
         endJ = endJ+1;
-        System.out.print("Start index: " + startI + ", " + startJ);
-        System.out.print("End index: " + endI + ", " + endJ);
+        //System.out.print("Start index: " + startI + ", " + startJ);
+        //System.out.print("End index: " + endI + ", " + endJ);
         //checking if piece is out of bounds
         if(startI < 0 || startI > 8) return false;
         else if(startJ < 1 || startJ > 9) return false;
