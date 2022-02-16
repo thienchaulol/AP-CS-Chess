@@ -125,13 +125,13 @@ public class ChessBoard{
         board.get(7).set(2, new ChessPiece("♘", false));
         board.get(7).set(7, new ChessPiece("♘", false));
         //Next to Knights are Bishops
-        board.get(0).set(3, new ChessPiece("♝", false));
-        board.get(0).set(6, new ChessPiece("♝", false));
+        board.get(0).set(3, new ChessPiece("♝", true));
+        board.get(0).set(6, new ChessPiece("♝", true));
         board.get(7).set(3, new ChessPiece("♗", false));
         board.get(7).set(6, new ChessPiece("♗", false));
         //White will always be bottom, black on top
-        board.get(0).set(4, new ChessPiece("♛", false));
-        board.get(0).set(5, new ChessPiece("♚", false));
+        board.get(0).set(4, new ChessPiece("♛", true));
+        board.get(0).set(5, new ChessPiece("♚", true));
         board.get(7).set(4, new ChessPiece("♕", false));
         board.get(7).set(5, new ChessPiece("♔", false));
     }
@@ -167,6 +167,7 @@ public class ChessBoard{
                 System.out.println("Not yo move :/"); // its very self explanitory
                 playGame();
             } else {
+                System.out.println("White's move");
                 isWhiteMove = false;
             }
         } else {
@@ -174,6 +175,7 @@ public class ChessBoard{
                 System.out.println("Not yo move :/");
                 playGame();                
             } else {
+                System.out.println("Black's move");
                 isWhiteMove = true;
             }
         }
